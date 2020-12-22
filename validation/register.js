@@ -22,6 +22,10 @@ module.exports = function validateRegisterInput(data) {
     errors.contact = 'Contact number is required';
   }
 
+  if (!Validator.isLength(data.contact, 10)) {
+    errors.contact = 'Contact number should be only of 10 digits';
+  }
+
   if (Validator.isEmpty(data.email)) {
     errors.email = 'Email field is required';
   }
