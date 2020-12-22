@@ -1,0 +1,11 @@
+{
+  "name": "astore",
+  "version": "1.0.0",
+  "description": "General E-commerce website",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "author": "",
+  "license": "MIT"
+}
