@@ -6,6 +6,8 @@ const passport = require('passport');
 const app = express();
 
 const users = require('./routes/api/users.js');
+const admin = require('./routes/admin/admin_auth.js');
+
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -16,19 +18,23 @@ const db = require('./config/keys').mongoURI;
 
 // Connect to MongoDB
 mongoose
-  .connect(db)
+  .connect(db,{useNewUrlParser: true,useUnifiedTopology: true})
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
+
 app.use(passport.initialize());
 require('./config/passport.js')(passport)
-  
-app.get('/', (req, res)=> res.send('Hello u'));
 
+//Usr route
 app.use('/api/users', users);
+
+//Admin route
+app.use('/admin/users',admin)
 
 const port = process.envPORT || 3000;
 
 app.listen(port, ()=> console.log(
   'server running on port', port
 ))
+
