@@ -8,8 +8,10 @@ const passport = require('passport');
 
 const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
+// const validateProfileInput = require('../../validation/profile');
 
 const User = require('../../models/User');
+const Profile = require('../../models/profile');
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -42,7 +44,8 @@ router.post('/register', (req, res) => {
         email: req.body.email,
         contact: req.body.contact,
         avatar,
-        password: req.body.password
+        password: req.body.password,
+        role: req.body.role
       });
 
       bcrypt.genSalt(10, (err, salt) => {
@@ -80,7 +83,7 @@ router.post('/login', (req, res) => {
 
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
-        const payload = { id: user.id, name: user.name, avatar: user.avatar };
+        const payload = { id: user.id, role:user.role, name: user.name, avatar: user.avatar };
         jwt.sign(
           payload,
           keys.secretOrKey,
@@ -116,4 +119,48 @@ router.get(
   }
 );
 
+// @route   GET api/users/profile
+// @desc    Return current user
+// @access  Private
+router.post(
+  '/profile',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+
+      // const { errors, isValid } = validateProfileInput(req.body);
+      // if (!isValid) {
+      //   return res.status(400).json(errors);
+      // }
+
+      const profileFields = {};
+      profileFields.user = req.user.id;
+      if (req.body.gender) profileFields.gender = req.body.gender;
+      if (req.body.age) profileFields.age = req.body.age;
+  
+      profileFields.delivery_address = {};
+      if (req.body.House) profileFields.delivery_address.House = req.body.House;
+      if (req.body.Street) profileFields.delivery_address.Street = req.body.Street;
+      if (req.body.Landmark) profileFields.delivery_address.Landmark = req.body.Landmark;
+      if (req.body.Pincode) profileFields.delivery_address.Pincode = req.body.Pincode;
+      if (req.body.city) profileFields.delivery_address.city = req.body.city;
+      if (req.body.state) profileFields.delivery_address.state = req.body.state;
+  
+      Profile.findOne({ user: req.user.id }).then(profile => {
+        if (profile) {
+          Profile.findOneAndUpdate(
+            { user: req.user.id },
+            { name: req.user.name },
+            { email: req.user.email },
+            { contact: req.user.contact },
+            { avatar: req.user.avatar },
+            { $set: profileFields },
+            { new: true }
+          ).then(profile => res.json(profile));
+        } else {
+              errors.Profile = 'register to view your profile';
+              res.status(400).json(errors);
+        }
+      });
+    });
+    
 module.exports = router;
