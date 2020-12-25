@@ -6,7 +6,7 @@ const passport = require('passport');
 const app = express();
 
 const users = require('./routes/api/users.js');
-const admin = require('./routes/admin/admin_auth.js');
+const admin = require('./routes/admin/admin.js');
 
 
 // Body parser middleware
