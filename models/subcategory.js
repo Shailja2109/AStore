@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
+const { default: validator } = require('validator');
 const Schema = mongoose.Schema;
 
 // Create Schema
 const SubCategory = new Schema({
   categoryId : {
     type: Schema.Types.ObjectID,
-    ref: 'Category'
+    ref: 'Category',
+    required: true
   },
   name: {
     type: String,
@@ -17,12 +19,10 @@ const SubCategory = new Schema({
     type: String
   },
   isActive : {
-    type: Boolean,
-    required: true
+    type: Boolean
   },
   createdBy : {
-    type: String,
-    required: true
+    type: String
   },
   date: {
     type: Date,

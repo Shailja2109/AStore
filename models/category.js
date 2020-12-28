@@ -14,11 +14,11 @@ const Category = new Schema({
   },
   isActive : {
     type: Boolean,
-    required: true
+    // required: true
   },
   createdBy : {
     type: String,
-    required: true
+    // required: true
   },
   date: {
     type: Date,

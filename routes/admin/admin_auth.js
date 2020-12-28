@@ -10,6 +10,7 @@ const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
 const checkAdminUser = require('../../validation/check-user');
 const validateCategory = require('../../validation/category');
+const validateSubCategory = require('../../validation/subcategory');
 
 const User = require('../../models/User');
 const Categories = require('../../models/category');
@@ -139,11 +140,12 @@ router.post(
       }
 
       // check validation
-      /* const {categoryError, categoryIsValid} = validateCategory(req.body);
+      const {categoryError, categoryIsValid} = validateCategory(req.body);
       if (!categoryIsValid){
+        res.json({msg : categoryError})
         return res.status(400).json(categoryError)
       }
-      console.log(req.body)*/
+    // console.log(req.body)
       
       const categoryfields = {}
       categoryfields.name = req.body.name;
@@ -178,11 +180,11 @@ router.post(
       }
 
       // check validation
-      /* const {categoryError, categoryIsValid} = validateCategory(req.body);
+      const {categoryError, categoryIsValid} = validateCategory(req.body);
       if (!categoryIsValid){
         return res.status(400).json(categoryError)
       }
-      console.log(req.body)*/
+      console.log(req.body)
       const categoryfields = {}
       categoryfields.name = req.body.name;
       categoryfields.thumbnail = req.body.thumbnail;
@@ -225,6 +227,12 @@ router.post(
       if (!isValid) {
           return res.status(400).json(errors);
       }
+
+      const {subCategoryError, subCategoryIsValid} = validateSubCategory(req.body);
+      if (!subCategoryIsValid){
+        res.json({msg: subCategoryError})
+        return res.status(400).json(subCategoryError)
+      }
    
       const subCategoryfields = {}
       subCategoryfields.categoryId = req.body.categoryId;
@@ -259,11 +267,11 @@ router.post(
       }
 
       // check validation
-      /* const {categoryError, categoryIsValid} = validateCategory(req.body);
-      if (!categoryIsValid){
-        return res.status(400).json(categoryError)
+      const {subCategoryError, subCategoryIsValid} = validateSubCategory(req.body);
+      if (!subCategoryIsValid){
+       
+        return res.status(400).json(subCategoryError)
       }
-      console.log(req.body)*/
       const subCategoryfields = {}
       subCategoryfields.name = req.body.name;
       subCategoryfields.thumbnail = req.body.thumbnail;
