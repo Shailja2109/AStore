@@ -10,13 +10,16 @@ const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
 const checkAdminUser = require('../../validation/check-user');
 const validateCategory = require('../../validation/category');
-const validateSubCategory = require('../../validation/subcategory');
+const validateMainCategory = require('../../validation/main-category');
+const validateSubCategory = require('../../validation/sub-category');
 
 const User = require('../../models/User');
-const Categories = require('../../models/category');
-const SubCategories = require('../../models/subcategory.js');
+const MainCategories = require('../../models/main-category');
+// const Categories = require('../../models/main-category');
+const SubCategories = require('../../models/sub-category');
+const category = require('../../models/category');
 
-// @route   GET api/admin/register
+// @route   GET admin/register
 // @desc    Register admin
 // @access  Public
 router.post('/register', (req, res) => {
@@ -42,7 +45,7 @@ router.post('/register', (req, res) => {
           email: req.body.email,
           contact: req.body.contact,
           avatar,
-          role:'admin',
+          role:keys.ADMIN,
           password: req.body.password
         });
   

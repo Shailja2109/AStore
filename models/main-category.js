@@ -2,12 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Create Schema
-const CategorySchema = new Schema({
-  main_category : {
-    type: Schema.Types.ObjectID,
-    ref: 'main_category',
-    required: true
-  },
+const MainCategorySchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -22,7 +17,8 @@ const CategorySchema = new Schema({
     default : true
   },
   createdBy : {
-    type: String
+    type: String,
+    // required: true
   },
   date: {
     type: Date,
@@ -30,4 +26,4 @@ const CategorySchema = new Schema({
   }
 });
 
-module.exports = Category = mongoose.model('category', CategorySchema);
+module.exports = MainCategory = mongoose.model('main_category', MainCategorySchema);

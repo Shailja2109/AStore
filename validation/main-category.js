@@ -1,7 +1,7 @@
 const Validator = require('validator');
 const isEmpty = require('./is-empty');
 
-module.exports = function validateCategory(data) {
+module.exports = function validateMainCategory(data) {
   let errors = {};
 
   data.name = !isEmpty(data.name) ? data.name : '';
@@ -10,10 +10,6 @@ module.exports = function validateCategory(data) {
     errors.name = 'name field is required';
   }
   
-  if (Validator.isEmpty(data.main_category)) {
-    errors.mainCategoryId = 'Please select main cateogry.';
-  }
-
   return {
     errors,
     isValid: isEmpty(errors)

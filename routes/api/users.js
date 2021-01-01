@@ -12,7 +12,7 @@ const validateProfileInput = require('../../validation/profile')
 const validateAddressInput = require('../../validation/address');
 
 const User = require('../../models/User');
-const Profile = require('../../models/profile.js');
+const Profile = require('../../models/profile');
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -45,8 +45,7 @@ router.post('/register', (req, res) => {
         email: req.body.email,
         contact: req.body.contact,
         avatar,
-        password: req.body.password,
-        role: req.body.role
+        password: req.body.password,    
       });
 
       bcrypt.genSalt(10, (err, salt) => {
