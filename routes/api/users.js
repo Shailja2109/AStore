@@ -8,10 +8,18 @@ const passport = require('passport');
 
 const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
+<<<<<<< HEAD
 // const validateProfileInput = require('../../validation/profile');
 
 const User = require('../../models/User');
 const Profile = require('../../models/profile');
+=======
+const validateProfileInput = require('../../validation/profile')
+const validateAddressInput = require('../../validation/address');
+
+const User = require('../../models/User');
+const Profile = require('../../models/profile.js');
+>>>>>>> admin
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -127,16 +135,27 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
 
+<<<<<<< HEAD
       // const { errors, isValid } = validateProfileInput(req.body);
       // if (!isValid) {
       //   return res.status(400).json(errors);
       // }
 
+=======
+    const { errors, isValid } = validateProfileInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+>>>>>>> admin
       const profileFields = {};
       profileFields.user = req.user.id;
       if (req.body.gender) profileFields.gender = req.body.gender;
       if (req.body.age) profileFields.age = req.body.age;
   
+<<<<<<< HEAD
       profileFields.delivery_address = {};
       if (req.body.House) profileFields.delivery_address.House = req.body.House;
       if (req.body.Street) profileFields.delivery_address.Street = req.body.Street;
@@ -145,6 +164,8 @@ router.post(
       if (req.body.city) profileFields.delivery_address.city = req.body.city;
       if (req.body.state) profileFields.delivery_address.state = req.body.state;
   
+=======
+>>>>>>> admin
       Profile.findOne({ user: req.user.id }).then(profile => {
         if (profile) {
           Profile.findOneAndUpdate(
@@ -153,10 +174,48 @@ router.post(
             { new: true }
           ).then(profile => res.json(profile));
         } else {
+<<<<<<< HEAD
               errors.Profile = 'register to view your profile';
               res.status(400).json(errors);
         }
       });
     });
+=======
+          new Profile(profileFields).save().then(profile => res.json(profile));
+        }
+      });
+    });
+
+// @route   Post api/users/profile/manage address
+// @desc    Return list of address
+// @access  Private
+router.post('/profile/manageAddress', passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateAddressInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const Address = {
+        Home: req.body.Home,
+        Street: req.body.Street,
+        Landmark: req.body.Landmark,
+        Pincode: req.body.Pincode,
+        city: req.body.city,
+        state: req.body.state,
+        other: req.body.other
+      };
+
+      profile.delivery_address.unshift(Address);
+
+      profile.save().then(profile => res.json(profile));
+    });
+  }
+);
+>>>>>>> admin
     
 module.exports = router;
