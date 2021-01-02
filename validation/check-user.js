@@ -1,14 +1,14 @@
 const isEmpty = require('./is-empty');
-const keys = require('../../config/keys');
+const keys = require('../config/keys');
 
 module.exports = function checkAdminUser(data) {
-    let errors = {};
+    let accessErrors = {};
     if(data.role !== keys.ADMIN){
-        errors.userrole = 'Only admin user can access.'
+        accessErrors.userrole = 'Only admin user can access.'
     }
 
     return {
-        errors,
-        isValid: isEmpty(errors)
+        accessErrors,
+        accessIsValid: isEmpty(accessErrors)
     };
 }
