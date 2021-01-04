@@ -158,7 +158,7 @@ router.post(
 
         Categories.findOne({ name : categoryfields.name  }).then(category => {
         if (category) {
-            res.json({msg : 'catego already exists' })
+            res.json({msg : 'category already exists' })
         } else {
         const category = new Categories(categoryfields);
           category
