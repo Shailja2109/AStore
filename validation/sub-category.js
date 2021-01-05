@@ -5,6 +5,8 @@ module.exports = function validateSubCategory(data) {
   let errors = {};
 
   data.name = !isEmpty(data.name) ? data.name : '';
+  data.main_category = !isEmpty(data.main_category) ? data.main_category : '';
+  data.category = !isEmpty(data.category) ? data.category : '';
 
   if (Validator.isEmpty(data.name)) {
     errors.name = 'name field is required';

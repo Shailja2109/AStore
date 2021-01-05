@@ -9,22 +9,14 @@ const passport = require('passport');
 const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
 const checkAdminUser = require('../../validation/check-user');
-const validateCategory = require('../../validation/category');
-const validateMainCategory = require('../../validation/main-category');
-const validateSubCategory = require('../../validation/sub-category');
 
 const User = require('../../models/User');
-const MainCategories = require('../../models/main-category');
-// const Categories = require('../../models/main-category');
-const SubCategories = require('../../models/sub-category');
-const category = require('../../models/category');
 
 // @route   GET admin/register
 // @desc    Register admin
 // @access  Public
 router.post('/register', (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
-  
     if (!isValid) {
       return res.status(400).json(errors);
     }
@@ -63,19 +55,16 @@ router.post('/register', (req, res) => {
     });
   });
   
-  // @route   GET admin/users/login
+  // @route   GET admin/login
   // @desc    Login admin User / Returning JWT Token
   // @access  Public
   router.post('/login', (req, res) => {
     const { errors, isValid } = validateLoginInput(req.body);
-  
     if (!isValid) {
       return res.status(400).json(errors);
     }
-  
     const email = req.body.email;
     const password = req.body.password;
-  
     User.findOne({ email }).then(user => {
       if (!user) {
         errors.email = 'User not found';
@@ -116,7 +105,6 @@ router.get(
     '/dashboard',
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
-        console.log(req.user)
         const { errors, isValid } = checkAdminUser(req.user);
         if (!isValid) {
             return res.status(400).json(errors);
@@ -130,6 +118,7 @@ router.get(
     }
   );
 
+<<<<<<< HEAD
 // @route   Post admin/users/dashboard/product/category
 // @desc    Return list of product category already there 
 // @access  Private
@@ -306,3 +295,6 @@ router.delete(
 );
 
 module.exports = router;
+=======
+  module.exports = router;
+>>>>>>> 87d4a106ce2ca9098549be893c8b6ad6a9ee6dbe
