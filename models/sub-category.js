@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
-const { default: validator } = require('validator');
 const Schema = mongoose.Schema;
 
 // Create Schema
-const SubCategory = new Schema({
-  categoryId : {
+const subCategorySchema = new Schema({
+  main_category : {
     type: Schema.Types.ObjectID,
-    ref: 'Category',
+    ref: 'main_category',
+    required: true
+  },
+  category : {
+    type: Schema.Types.ObjectID,
+    ref: 'category',
     required: true
   },
   name: {
@@ -19,7 +23,8 @@ const SubCategory = new Schema({
     type: String
   },
   isActive : {
-    type: Boolean
+    type: Boolean,
+    default : true
   },
   createdBy : {
     type: String
@@ -30,4 +35,4 @@ const SubCategory = new Schema({
   }
 });
 
-module.exports = SubCategories = mongoose.model('SubCategory', SubCategory);
+module.exports = SubCategory = mongoose.model('sub_category', subCategorySchema);

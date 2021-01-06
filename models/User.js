@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const keys = require('../config/keys');
 const Schema = mongoose.Schema;
 
 // Create Schema
@@ -29,8 +30,8 @@ const UserSchema = new Schema({
   },
   role:{
     type: String,
-    enum : ['user','admin'],
-    default : 'user'
+    enum : [keys.USER,keys.ADMIN],
+    default : keys.USER
   }
 });
 

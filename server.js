@@ -6,7 +6,9 @@ const passport = require('passport');
 const app = express();
 
 const users = require('./routes/api/users.js');
-const admin = require('./routes/admin/admin.js');
+const adminAuth = require('./routes/admin/admin_auth.js');
+const adminProduct = require('./routes/admin/Ecommerce/product.js');
+const adminEcommerceCategory = require('./routes/admin/Ecommerce/category.js');
 
 
 // Body parser middleware
@@ -29,8 +31,10 @@ require('./config/passport.js')(passport)
 //Usr route
 app.use('/api/users', users);
 
-//Admin route
-app.use('/admin/users',admin)
+//admin 
+app.use('/admin', adminAuth);
+app.use('/admin/ecommerce',adminProduct);
+app.use('/admin/ecommerce', adminEcommerceCategory);
 
 const port = process.envPORT || 3000;
 
