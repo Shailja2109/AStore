@@ -6,7 +6,7 @@ module.exports = function checkAdminUser(data) {
     if(data.role !== keys.ADMIN){
         accessErrors.userrole = 'Only admin user can access.'
     }
-
+    
     return {
         accessErrors,
         accessIsValid: isEmpty(accessErrors)

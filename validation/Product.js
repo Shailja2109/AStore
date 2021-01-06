@@ -53,11 +53,7 @@ module.exports = function validateProduct(data){
     if (Validator.isEmpty(data.thumbnail)) {
         errors.thumbnail = 'thumbnail field is required';
     }
-    // if (!Validator.isEmpty(data.specification.title)) {
-    //     if (Validator.isEmpty(data.specification.spec_description)) {
-    //         errors.spec_description = 'specfication description field is required';
-    //     }
-    // }
+
     if (Validator.isEmpty(data.stock)) {
         errors.stock = 'stock field is required';
     }
@@ -65,5 +61,4 @@ module.exports = function validateProduct(data){
         errors,
         isValid: isEmpty(errors)
     };
-
 }

@@ -23,17 +23,17 @@ const productSchema = new Schema({
     },
     main_category : {
         type: Schema.Types.ObjectID,
-        ref: 'main_category',
+        ref: 'main_categories',
         required: true
     },
     category : {
         type: Schema.Types.ObjectID,
-        ref: 'category',
+        ref: 'categories',
         required: true
     },
     sub_category : {
         type: Schema.Types.ObjectID,
-        ref: 'sub_category',
+        ref: 'sub_categories',
         required: true
     },
     product_description : {
@@ -115,9 +115,11 @@ const productSchema = new Schema({
     },
     size : {
         type: String,
+        required: true
     },
     color : {
         type: String,
+        required: true
     },
     created_date : {
         type: Date,
