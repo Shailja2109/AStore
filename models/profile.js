@@ -11,47 +11,40 @@ const ProfileSchema = new Schema({
     type: String,
   },
   age: {
-<<<<<<< HEAD
-    type: Number,
-=======
     type: String,
->>>>>>> admin
   },
-  delivery_address: [
+  address: [
     {
-      House: {
-        type: String,
-<<<<<<< HEAD
-        // required: true
+      full_name : {
+        type:String,
+        required :true
       },
-      Street: {
-        type: String,
-        // required: true
-=======
+      phone_number : {
+        type : String,
+        required : true
       },
-      Street: {
+      house_building: {
         type: String,
->>>>>>> admin
+        required : true,
       },
-      Landmark: {
+      area: {
+        type: String,
+        required : true
+      },
+      landmark: {
         type: String
       },
       city: {
         type: String,
-<<<<<<< HEAD
-        // required: true
+        required:true,
       },
-      Pincode: {
+      pincode: {
         type: String,
-        // required: true
-=======
-      },
-      Pincode: {
-        type: String,
->>>>>>> admin
+        required:true,
       },
       state: {
         type: String,
+        required:true,
       }
     }
   ],
