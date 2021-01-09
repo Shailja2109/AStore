@@ -35,5 +35,21 @@ router.post('/profile',
   passport.authenticate('jwt', { session: false }),
   CustomerController.CustomerProfile
 );
+
+// @route   GET api/users/address
+// @desc    Return current user address
+// @access  Private
+router.get('/address',
+  passport.authenticate('jwt', { session: false }),
+  CustomerController.getCustomerAddreess
+)
+
+// @route   POST api/users/addToAddress
+// @desc    add  user address
+// @access  Private
+router.post('/addToAddress',
+  passport.authenticate('jwt', { session: false }),
+  CustomerController.addAddress
+)
     
 module.exports = router;
