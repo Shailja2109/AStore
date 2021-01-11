@@ -1,5 +1,6 @@
 const Cart = require('../models/cart');
 const validateCartInput = require('../validation/cart');
+const Product = require('../models/product');
 
 exports.addToCart = (req,res) =>{
   const { errors, isValid } = validateCartInput(req.body);
@@ -14,6 +15,12 @@ exports.addToCart = (req,res) =>{
   if (req.body.product) cartFields.item.product = req.body.product;
   if (req.body.quantity) cartFields.item.quantity = req.body.quantity;
   if (req.body.size) cartFields.item.size = req.body.size;
+
+  Product.findOne({_id : req.body.product}).then(product => {
+    if (product.price) cartFields.item.price = product.price;
+    if (product.discount) cartFields.item.discount = product.discount;
+    if (product.offer_price) cartFields.item.offer_price = product.offer_price;
+  })
   
   Cart.findOne({ user: req.user._id }).then(cart => {
     if (cart) {  
