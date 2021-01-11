@@ -1,8 +1,9 @@
 const User = require('../models/User');
 const Profile = require('../models/profile');
+
 const validateProfileInput = require('../validation/profile');
 const validateAddressInput = require('../validation/address');
-const profile = require('../models/profile');
+
 
 //Get customer profile
 exports.getCutomerProfile = (req,res)=>{
@@ -99,16 +100,58 @@ exports.CustomerProfile = (req,res) =>{
 //Get all address
 exports.getCustomerAddreess = (req,res)=>{
     const errors = {}
-    profile.findOne({user:req.user.id})
+    // if user found
+    Profile.findOne({user:req.user.id})
     .then(profile=>{
+        //check if user has profile 
         if(profile){
-            res.json(profile.address);
+            // check if user added any address
+            if(profile.address){
+                res.json(profile.address);
+            }
+            else{
+                errors.address = 'No address found';
+                return res.status(400).json(errors);
+            }
+            
         }
-    })
+        else{
+            // when no profile found
+            errors.profile = 'No profile found'
+            return res.status(400).json(errors);
+        }
+    }).catch(err=>res.status(400).json({err}));
+}
+
+//get single address by id
+exports.getAddress = (req,res)=>{
+    const errors = {}
+    //if user found
+    Profile.findOne({user : req.user.id})
+    .then(profile=>{
+        //if user had profile
+        if(profile){
+            // if user has valid address id
+            const address = profile.address.find(a=>a._id == req.params.addressId)
+           
+            // valid address id found
+            if(address){
+                return res.json(address);
+            }
+            else{
+                errors.address = 'No address found';
+                return res.status(400).json(errors);
+            }
+        }
+        else{
+            errors.profile = 'No profile found'
+            return res.status(400).json(errors);
+        }
+    }).catch(err=>res.status(400).json({err}));
 }
 
 //add customer address
-exports.addAddress = (req,res)=>{
+exports.addAndUpadteAddress = (req,res)=>{
     //checking validation for address
 
     const {errors,isValid} = validateAddressInput(req.body);
@@ -127,9 +170,8 @@ exports.addAddress = (req,res)=>{
     if (req.body.pincode) addressfield.pincode = req.body.pincode;
     
     if (req.body.state) addressfield.state = req.body.state;
-    console.log(addressfield)
     //checking if user have profile
-    profile.findOne({user:req.user.id})
+    Profile.findOne({user:req.user.id})
     .exec((errors,profile) =>{
     
         if(errors) return res.status(400).json({errors});
@@ -185,4 +227,49 @@ exports.addAddress = (req,res)=>{
            
         }
     });
+}
+
+// Detele specific address by id
+exports.deleteAddress = (req,res)=>{
+
+    //if user has profile
+    Profile.findOne({user:req.user.id})
+    .then(profile=>{
+        if(profile){
+            
+            const addressId = req.params.addressId;
+            //check if address by id is in address array
+            const address = profile.address.find(a=>a._id == addressId)
+
+            if(address){
+                //found address and deleting
+                Profile.update(
+                    {user:req.user.id, "address._id" : addressId},{
+                    "$pull":{
+                        "address":{_id : addressId}
+                    },  
+                    },
+                    { safe: true, multi:true })
+                .exec((err,doc)=>{
+                    //If any error occurr
+                    if(err) return res.status(400).json({err})
+                    if(doc){
+                        //result as success
+                        return res.status(200).json({'messege' : 'Deleted successfully.'})
+                    }
+                });
+            }
+            else{
+                //address not found
+                errors.address = 'No address found';
+                return res.status(400).json(errors);
+            }
+        }
+        else{
+            //profile not found
+            errors.profile = 'No profile found'
+            return res.status(400).json(errors);
+        }
+    })
+    .catch(err=>res.status(400).json({err}))
 }

@@ -37,19 +37,35 @@ router.post('/profile',
 );
 
 // @route   GET api/users/address
-// @desc    Return current user address
+// @desc    Return current user all address
 // @access  Private
 router.get('/address',
   passport.authenticate('jwt', { session: false }),
   CustomerController.getCustomerAddreess
 )
 
+// @route   GET api/users/address/:id
+// @desc    get user address
+// @access  Private
+router.get('/address/:addressId',
+  passport.authenticate('jwt', { session: false }),
+  CustomerController.getAddress
+)
+
 // @route   POST api/users/addToAddress
-// @desc    add  user address
+// @desc    add & update user address
 // @access  Private
 router.post('/addToAddress',
   passport.authenticate('jwt', { session: false }),
-  CustomerController.addAddress
+  CustomerController.addAndUpadteAddress
+)
+
+// @route   DELETE api/users/address/:id
+// @desc    delete user address
+// @access  Private
+router.delete('/address/:addressId',
+  passport.authenticate('jwt', { session: false }),
+  CustomerController.deleteAddress
 )
     
 module.exports = router;
