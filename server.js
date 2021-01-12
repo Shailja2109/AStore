@@ -36,7 +36,7 @@ app.use('/admin', adminAuth);
 app.use('/admin/ecommerce',adminProduct);
 app.use('/admin/ecommerce', adminEcommerceCategory);
 
-const port = process.envPORT || 3000;
+const port = process.envPORT || 5000;
 
 app.listen(port, ()=> console.log(
   'server running on port', port

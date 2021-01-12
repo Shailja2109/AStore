@@ -1,0 +1,15 @@
+import "./App.css";
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
+
+function App() {
+  return (
+    <div className="App">
+      <Header />
+      <h1>Welcome Astore</h1>
+      <Footer />
+    </div>
+  );
+}
+
+export default App;
