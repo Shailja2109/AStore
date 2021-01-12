@@ -39,7 +39,7 @@ const ProfileSchema = new Schema({
         required:true,
       },
       pincode: {
-        type: String,
+        type: Number,
         required:true,
       },
       state: {
