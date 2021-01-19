@@ -5,7 +5,6 @@
 }
 .login-div {
   display: flex;
-  background-color: aqua;
   height: 100%;
 }
 .login-form {
@@ -16,10 +15,18 @@
   justify-content: center;
 }
 .login-img {
-  flex: 1;
-  width: 100%;
-  overflow: hidden;
+  flex: 1 1;
+  display: flex;
+  justify-content: end;
+  margin: auto;
 }
 .login-img img {
+  max-height: 70%;
+}
+.login-form form {
+  width: 50%;
+}
+.login-form form button {
   width: 100%;
+  margin-top: 10px;
 }
