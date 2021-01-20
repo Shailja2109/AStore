@@ -1,8 +1,32 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { logOutUser } from "../../actions/authActions";
 
 class Header extends Component {
+  onLogOutClick(e) {
+    e.preventDefault();
+    this.props.logOutUser();
+  }
   render() {
+    const { isAuthenticated, user } = this.props.auth;
+    const LogInLinks = (
+      <a className="nav-links" href="" onClick={this.onLogOutClick.bind(this)}>
+        LogIn
+      </a>
+    );
+    const LogOutLinks = (
+      <a className="nav-links" href="" onClick={this.onLogOutClick.bind(this)}>
+        <img
+          className="rounded-circle"
+          src={user.avatar}
+          alt={user.name}
+          style={{ width: "25px", marginRight: "25px" }}
+        />
+        Logout
+      </a>
+    );
     return (
       <nav class="navbar navbar-dark  bg-dark">
         <div class="container-fluid">
@@ -10,13 +34,19 @@ class Header extends Component {
             Astore
           </Link>
           <div className="pull-right">
-            <Link className="nav-links" to="/login">
-              LogIn
-            </Link>
+            {isAuthenticated ? LogOutLinks : LogInLinks}
           </div>
         </div>
       </nav>
     );
   }
 }
-export default Header;
+Header.propTypes = {
+  logOutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+export default connect(mapStateToProps, { logOutUser })(Header);

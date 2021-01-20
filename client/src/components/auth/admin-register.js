@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import classnames from "classnames";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
-
 import trolly from "../../images/trolly2.jpg";
-import { registerUser } from "../../actions/authActions";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import classnames from "classnames";
 
 class Register extends Component {
   constructor() {
@@ -22,36 +18,29 @@ class Register extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
-    }
-  }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
   onSubmit(e) {
     e.preventDefault();
-    const userData = {
+    const user = {
       name: this.state.name,
       email: this.state.email,
       contact: this.state.contact,
       password: this.state.password,
       password2: this.state.password2,
     };
-
-    this.props.registerUser(userData, this.props.history);
-    // axios
-    //   .post("/api/users/register", user)
-    //   .then((res) => console.log(res.data))
-    //   .catch((err) => this.setState({ errors: err.response.data }));
+    axios
+      .post("/api/users/register", user)
+      .then((res) => console.log(res.data))
+      .catch((err) => this.setState({ errors: err.response.data }));
   }
   render() {
     const { errors } = this.state;
     return (
       <div className="login-div">
         <div className="login-form">
-          <h1>Astore</h1>
+          <h1>Astore Admin</h1>
           <h4>Register to your account</h4>
           <form noValidate onSubmit={this.onSubmit}>
             <div className="form-group">
@@ -141,24 +130,14 @@ class Register extends Component {
             </div>
           </form>
           <p>
-            Already Registered to Astore? <Link to="/login">Log in.</Link>
+            Already Registered to Astore? <Link to="/admin/login">Log in.</Link>
           </p>
         </div>
-        <div className="login-img">
+        {/* <div className="login-img">
           <img src={trolly} alt="Store" />
-        </div>
+        </div> */}
       </div>
     );
   }
 }
-Register.propTypes = {
-  registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.errors,
-});
-export default connect(mapStateToProps, { registerUser })(withRouter(Register));
+export default Register;

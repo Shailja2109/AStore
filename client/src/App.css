@@ -22,6 +22,7 @@
 }
 .login-img img {
   max-height: 70%;
+  max-width: 100%;
 }
 .login-form form {
   width: 50%;

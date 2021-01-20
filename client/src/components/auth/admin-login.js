@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import trolly from "../../images/trolly3.jpg";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import classnames from "classnames";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { loginUser } from "../../actions/authActions";
 
 class login extends Component {
   constructor() {
@@ -17,35 +15,26 @@ class login extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
-    }
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
-    }
-  }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
   onSubmit(e) {
     e.preventDefault();
-    const userData = {
+    const user = {
       email: this.state.email,
       password: this.state.password,
     };
-    this.props.loginUser(userData);
-    // axios
-    //   .post("/api/users/login", user)
-    //   .then((res) => console.log(res.data))
-    //   .catch((err) => this.setState({ errors: err.response.data }));
+    axios
+      .post("/api/users/login", user)
+      .then((res) => console.log(res.data))
+      .catch((err) => this.setState({ errors: err.response.data }));
   }
   render() {
     const { errors } = this.state;
     return (
       <div className="login-div">
         <div className="login-form">
-          <h1>Astore</h1>
+          <h1>Astore Admin</h1>
           <h4>LogIn to your account</h4>
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
@@ -85,24 +74,14 @@ class login extends Component {
             </div>
           </form>
           <p>
-            New to Astore? <Link to="/register">Create an account.</Link>
+            New to Astore? <Link to="/admin/register">Create an account.</Link>
           </p>
         </div>
-        <div className="login-img">
+        {/* <div className="login-img">
           <img src={trolly} alt="Store" />
-        </div>
+        </div> */}
       </div>
     );
   }
 }
-
-login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-};
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.errors,
-});
-export default connect(mapStateToProps, { loginUser })(login);
+export default login;
