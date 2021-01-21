@@ -12,9 +12,9 @@ class Header extends Component {
   render() {
     const { isAuthenticated, user } = this.props.auth;
     const LogInLinks = (
-      <a className="nav-links" href="" onClick={this.onLogOutClick.bind(this)}>
-        LogIn
-      </a>
+      <Link className="nav-links" to="/login">
+        Log In
+      </Link>
     );
     const LogOutLinks = (
       <a className="nav-links" href="" onClick={this.onLogOutClick.bind(this)}>

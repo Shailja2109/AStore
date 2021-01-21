@@ -19,10 +19,16 @@ class login extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      this.props.history.push("/");
     }
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/");
     }
   }
   onChange(e) {
@@ -35,10 +41,6 @@ class login extends Component {
       password: this.state.password,
     };
     this.props.loginUser(userData);
-    // axios
-    //   .post("/api/users/login", user)
-    //   .then((res) => console.log(res.data))
-    //   .catch((err) => this.setState({ errors: err.response.data }));
   }
   render() {
     const { errors } = this.state;
