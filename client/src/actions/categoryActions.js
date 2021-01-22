@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_MAINCATEGORY, GET_CATEGORY } from "./types";
+import { GET_MAINCATEGORY, GET_CATEGORY, GET_SUBCATEGORY } from "./types";
 
 //get main category
 export const GetLandingMainCategory = () => (dispatch) => {
@@ -19,12 +19,11 @@ export const GetLandingMainCategory = () => (dispatch) => {
     });
 };
 
-//get category by it's main category id
+//get category by it's category id
 export const GetLandingCategory = (id) => (dispatch) => {
   axios
     .get(`/category/${id}`)
     .then((res) => {
-      console.log(res.data);
       dispatch({
         type: GET_CATEGORY,
         payload: res.data,
@@ -33,6 +32,24 @@ export const GetLandingCategory = (id) => (dispatch) => {
     .catch((err) => {
       dispatch({
         type: GET_CATEGORY,
+        payload: null,
+      });
+    });
+};
+
+//get category by it's sub category id
+export const GetLandingSubCategory = (id) => (dispatch) => {
+  axios
+    .get(`/subCategory/${id}`)
+    .then((res) => {
+      dispatch({
+        type: GET_SUBCATEGORY,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: GET_SUBCATEGORY,
         payload: null,
       });
     });

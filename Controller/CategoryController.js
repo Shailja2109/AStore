@@ -6,6 +6,7 @@ const checkAdminUser = require("../validation/check-user");
 const MainCategories = require("../models/main-category");
 const SubCategories = require("../models/sub-category");
 const Categories = require("../models/category");
+const subCategory = require("../models/sub-category");
 
 function sortAndLimit(req) {
   const sort = {};
@@ -253,6 +254,20 @@ exports.getLandingCategory = (req, res) => {
     .then((categories) => {
       if (categories) {
         res.json(categories);
+      } else {
+        res.json({ msg: "There is no category." });
+      }
+    })
+    .catch((err) => res.status(404).json(err));
+};
+
+//landing sub category fetch
+exports.getLandingSubcategory = (req, res) => {
+  subCategory
+    .find({ category: req.params.id })
+    .then((subCategory) => {
+      if (subCategory) {
+        res.json(subCategory);
       } else {
         res.json({ msg: "There is no category." });
       }

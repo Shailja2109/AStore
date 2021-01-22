@@ -15,6 +15,8 @@ import adminLogin from "./components/auth/admin-login";
 import adminRegister from "./components/auth/admin-register";
 import Register from "./components/auth/Register";
 import Category from "./components/category/Category";
+import SubCategory from "./components/category/SubCategory";
+import Products from "./components/products/ProductList";
 
 //check token
 if (localStorage.jwtToken) {
@@ -52,6 +54,8 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/Category/:id" component={Category} />
+            <Route exact path="/subCategory/:id" component={SubCategory} />
+            <Route exact path="/products/:id" component={Products} />
             <div className="container"></div>
             <Footer />
           </div>

@@ -7,7 +7,6 @@ import CategoryItems from "./CategoryItems";
 class Category extends Component {
   componentDidMount() {
     if (this.props.match.params.id) {
-      console.log(this.props.match.params.id);
       this.props.GetLandingCategory(this.props.match.params.id);
     }
   }

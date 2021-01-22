@@ -119,3 +119,16 @@ exports.deleteProduct = (req, res) => {
     .then(res.json({ msg: "deteled successfully" }))
     .catch((err) => res.status(404).json(err));
 };
+
+//public product list by sub category id
+exports.getPublicProductlist = (req, res) => {
+  product
+    .find({ sub_category: req.params.sub_category_id })
+    .then((product) => {
+      if (product) {
+        res.json(product);
+      }
+      res.json({ msg: "no product found" });
+    })
+    .catch((err) => res.status(404).json(err));
+};
