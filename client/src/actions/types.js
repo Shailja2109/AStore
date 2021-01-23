@@ -4,3 +4,4 @@ export const GET_MAINCATEGORY = "GET_MAINCATEGORY";
 export const GET_CATEGORY = "GET_CATEGORY";
 export const GET_SUBCATEGORY = "GET_SUBCATEGORY";
 export const GET_PRODCUTS = "GET_PRODCUTS";
+export const LOADING = "LOADING";

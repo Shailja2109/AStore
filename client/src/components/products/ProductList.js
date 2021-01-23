@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { GetProducts } from "../../actions/productActions";
 import ProductListItems from "./ProductListItems";
+import Spinner from "../common/Spinner";
 
 class ProductList extends Component {
   componentDidMount() {
@@ -11,10 +12,10 @@ class ProductList extends Component {
     }
   }
   render() {
-    const { products } = this.props.products;
+    const { products, loding } = this.props.products;
     let productsItem;
-    if (products === null) {
-      productsItem = "asdjk";
+    if (products === null || loding) {
+      productsItem = <Spinner />;
     } else {
       if (products.length > 0) {
         productsItem = products.map((products) => (

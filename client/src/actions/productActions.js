@@ -1,8 +1,9 @@
 import axios from "axios";
-import { GET_PRODCUTS } from "./types";
+import { GET_PRODCUTS, LOADING } from "./types";
 
 // Get all products
 export const GetProducts = (id) => (dispatch) => {
+  dispatch(setLoading());
   axios
     .get(`/products/${id}`)
     .then((res) => {
@@ -14,7 +15,14 @@ export const GetProducts = (id) => (dispatch) => {
     .catch((err) => {
       dispatch({
         type: GET_PRODCUTS,
-        payload: null,
+        payload: {},
       });
     });
+};
+
+//loading
+export const setLoading = () => {
+  return {
+    type: LOADING,
+  };
 };

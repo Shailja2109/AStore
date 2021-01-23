@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "../src/store";
 import jwt_decode from "jwt-decode";
@@ -11,12 +11,19 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Landing from "./components/layout/Landing";
 import Login from "./components/auth/Login";
-import adminLogin from "./components/auth/admin-login";
-import adminRegister from "./components/auth/admin-register";
 import Register from "./components/auth/Register";
 import Category from "./components/category/Category";
 import SubCategory from "./components/category/SubCategory";
 import Products from "./components/products/ProductList";
+
+//admin components
+import adminLogin from "./components/auth/admin-login";
+import adminRegister from "./components/auth/admin-register";
+import adminDashboard from "./components/admin/Dashboard";
+
+//Restricting Route
+import PrivateRoute from "./components/common/PrivateRoute";
+import PrivateAdminRoute from "./components/common/PrivateAdminRoute";
 
 //check token
 if (localStorage.jwtToken) {
@@ -46,9 +53,16 @@ class App extends Component {
         <Router>
           <div className="App">
             <Header />
-            {/* Admin routes */}
+            {/* admin routes */}
             <Route exact path="/admin/login" component={adminLogin} />
             <Route exact path="/admin/register" component={adminRegister} />
+            <Switch>
+              <PrivateAdminRoute
+                exact
+                path="/admin/dashboard"
+                component={adminDashboard}
+              />
+            </Switch>
 
             <Route exact path="/" component={Landing} />
             <Route exact path="/login" component={Login} />
@@ -56,6 +70,7 @@ class App extends Component {
             <Route exact path="/Category/:id" component={Category} />
             <Route exact path="/subCategory/:id" component={SubCategory} />
             <Route exact path="/products/:id" component={Products} />
+
             <div className="container"></div>
             <Footer />
           </div>
