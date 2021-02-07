@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logOutUser } from "../../actions/authActions";
+import classnames from "classnames";
 
 class Header extends Component {
   onLogOutClick(e) {
@@ -28,9 +29,13 @@ class Header extends Component {
       </a>
     );
     return (
-      <nav class="navbar navbar-dark  bg-dark">
+      <nav
+        className={classnames("navbar navbar-dark bg-warning", {
+          "bg-dark": user.role != "admin",
+        })}
+      >
         <div class="container-fluid">
-          <Link class="navbar-brand" to="/">
+          <Link className="navbar-brand" to="/">
             Astore
           </Link>
           <div className="pull-right">

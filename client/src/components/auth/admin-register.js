@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import trolly from "../../images/trolly2.jpg";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { withRouter } from "react-router-dom";
 import classnames from "classnames";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { registerAdminUser } from "../../actions/authActions";
 
-class Register extends Component {
+class AdminRegister extends Component {
   constructor() {
     super();
     this.state = {
@@ -18,22 +20,29 @@ class Register extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/admin/dashboard");
+    }
+  }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
   onSubmit(e) {
     e.preventDefault();
-    const user = {
+    const userData = {
       name: this.state.name,
       email: this.state.email,
       contact: this.state.contact,
       password: this.state.password,
       password2: this.state.password2,
     };
-    axios
-      .post("/api/users/register", user)
-      .then((res) => console.log(res.data))
-      .catch((err) => this.setState({ errors: err.response.data }));
+    this.props.registerAdminUser(userData, this.props.history);
   }
   render() {
     const { errors } = this.state;
@@ -133,11 +142,21 @@ class Register extends Component {
             Already Registered to Astore? <Link to="/admin/login">Log in.</Link>
           </p>
         </div>
-        {/* <div className="login-img">
-          <img src={trolly} alt="Store" />
-        </div> */}
       </div>
     );
   }
 }
-export default Register;
+
+AdminRegister.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors,
+});
+export default connect(mapStateToProps, { registerAdminUser })(
+  withRouter(AdminRegister)
+);

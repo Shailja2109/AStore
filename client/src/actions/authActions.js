@@ -17,7 +17,7 @@ export const registerUser = (userdata, history) => (dispatch) => {
     });
 };
 
-//login
+//user login
 export const loginUser = (userdata) => (dispatch) => {
   axios
     .post("api/users/login", userdata)
@@ -34,6 +34,45 @@ export const loginUser = (userdata) => (dispatch) => {
 
       dispatch(setCurrentUser(decoded));
     })
+    .catch((err) => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      });
+    });
+};
+
+// admin login
+export const loginAdminUser = (userdata) => (dispatch) => {
+  axios
+    .post("/admin/login", userdata)
+    .then((res) => {
+      //save to local storage
+      const { token } = res.data;
+      localStorage.setItem("jwtToken", token);
+
+      //set token to header
+      setAuthToken(token);
+
+      //decode token to get user data
+      const decoded = jwt_decode(token);
+
+      dispatch(setCurrentUser(decoded));
+    })
+    .catch((err) => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      });
+    });
+};
+
+//admin User registeration
+//register user
+export const registerAdminUser = (userdata, history) => (dispatch) => {
+  axios
+    .post("/admin/register", userdata)
+    .then((res) => history.push("/admin/login"))
     .catch((err) => {
       dispatch({
         type: GET_ERRORS,

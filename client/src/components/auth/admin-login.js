@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import trolly from "../../images/trolly3.jpg";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import classnames from "classnames";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginAdminUser } from "../../actions/authActions";
 
-class login extends Component {
+class AdminLogin extends Component {
   constructor() {
     super();
     this.state = {
@@ -15,19 +16,30 @@ class login extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/admin/dashboard");
+    }
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/admin/dashboard");
+    }
+  }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
   onSubmit(e) {
     e.preventDefault();
-    const user = {
+    const userData = {
       email: this.state.email,
       password: this.state.password,
     };
-    axios
-      .post("/api/users/login", user)
-      .then((res) => console.log(res.data))
-      .catch((err) => this.setState({ errors: err.response.data }));
+    this.props.loginAdminUser(userData);
   }
   render() {
     const { errors } = this.state;
@@ -41,16 +53,19 @@ class login extends Component {
               <input
                 type="email"
                 className={classnames("form-control", {
-                  "is-invalid": errors.email,
+                  "is-invalid": errors.email || errors.inValidAccess,
                 })}
                 placeholder="Email"
                 name="email"
                 value={this.state.email}
                 onChange={this.onChange}
               />
-              {errors.email && (
+              {(errors.email && (
                 <div className="invalid-feedback">{errors.email}</div>
-              )}
+              )) ||
+                (errors.inValidAccess && (
+                  <div className="invalid-feedback">{errors.inValidAccess}</div>
+                ))}
             </div>
             <div className="form-group">
               <input
@@ -77,11 +92,17 @@ class login extends Component {
             New to Astore? <Link to="/admin/register">Create an account.</Link>
           </p>
         </div>
-        {/* <div className="login-img">
-          <img src={trolly} alt="Store" />
-        </div> */}
       </div>
     );
   }
 }
-export default login;
+AdminLogin.propTypes = {
+  loginAdminUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+};
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors,
+});
+export default connect(mapStateToProps, { loginAdminUser })(AdminLogin);
